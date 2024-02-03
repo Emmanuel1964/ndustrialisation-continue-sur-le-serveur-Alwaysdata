@@ -1,1 +1,20 @@
-name: Industrialisation continue sur le serveur Alwaysdataon: pushjobs:Ê deploy:ÊÊÊ runs-on: ubuntu-latestÊÊÊ steps:ÊÊÊÊÊ - name: Deploy Flask appÊÊÊÊÊÊÊ uses: appleboy/ssh-action@masterÊÊÊÊÊÊÊ with:ÊÊÊÊÊÊÊÊÊ host: ${{ secrets.HOST_DNS }}ÊÊÊÊÊÊÊÊÊ username: ${{ secrets.USERNAME }}ÊÊÊÊÊÊÊÊÊ password: ${{ secrets.PASSWORD }}ÊÊÊÊÊÊÊÊÊ key: ${{ secrets.EC2_SSH_KEY }}ÊÊÊÊÊÊÊÊÊ script: |ÊÊÊÊÊÊÊÊÊÊÊ cd $HOME/www/ÊÊÊÊÊÊÊÊÊÊÊ git cloneÊhttps://github.com/bstocker/flask_hello_world.gitÊÊÊÊÊÊÊÊÊÊÊ rsync -r ./flask_hello_world/ ./flaskÊÊÊÊÊÊÊÊÊÊÊ rm -rf ./flask_hello_worldÊÊÊÊÊÊÊÊÊÊÊ curl -X POST --basic --user "${{ secrets.ALWAYSDATA_TOKEN }}:"Êhttps://api.alwaysdata.com/v1/site/${{ secrets.ALWAYSDATA_SITE_ID }}/restart/
+name: Industrialisation continue sur le serveur Alwaysdata
+on: push
+jobs:
+ÿ deploy:
+ÿÿÿ runs-on: ubuntu-latest
+ÿÿÿ steps:
+ÿÿÿÿÿ - name: Deploy Flask app
+ÿÿÿÿÿÿÿ uses: appleboy/ssh-action@master
+ÿÿÿÿÿÿÿ with:
+ÿÿÿÿÿÿÿÿÿ host: ${{ secrets.HOST_DNS }}
+ÿÿÿÿÿÿÿÿÿ username: ${{ secrets.USERNAME }}
+ÿÿÿÿÿÿÿÿÿ password: ${{ secrets.PASSWORD }}
+ÿÿÿÿÿÿÿÿÿ key: ${{ secrets.EC2_SSH_KEY }}
+ÿÿÿÿÿÿÿÿÿ script: |
+ÿÿÿÿÿÿÿÿÿÿÿ cd $HOME/www/
+ÿÿÿÿÿÿÿÿÿÿÿ git cloneÿhttps://github.com/bstocker/flask_hello_world.git
+ÿÿÿÿÿÿÿÿÿÿÿ rsync -r ./flask_hello_world/ ./flask
+ÿÿÿÿÿÿÿÿÿÿÿ rm -rf ./flask_hello_world
+ÿÿÿÿÿÿÿÿÿÿÿ curl -X POST --basic --user "${{ secrets.ALWAYSDATA_TOKEN }}:"ÿhttps://api.alwaysdata.com/v1/site/${{ secrets.ALWAYSDATA_SITE_ID }}/restart/
+
